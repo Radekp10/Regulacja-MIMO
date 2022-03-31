@@ -16,7 +16,7 @@ clear;
 n=2e3; % liczba kroków h
 h=1; % wielkość kroku [s]
 
-czy_zlin=false; % czy model liniowy czy zlinearyzowany
+czy_zlin=true; % czy model liniowy czy zlinearyzowany
 
 % Osie do wykresu
 tu=0:1:(n-1);
@@ -39,6 +39,7 @@ y2(1)=y20;
 
 % Zadana trajektoria sterowań i zakłóceń
 u1(1:n-1)=u10;
+% u1(1000:end)=25;
 u2(1:n-1)=u20;
 w1(1:n-1)=w10;
 w2(1:n-1)=w20;
