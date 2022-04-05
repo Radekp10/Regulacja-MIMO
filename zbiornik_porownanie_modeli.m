@@ -4,12 +4,14 @@
 
 clear;
 
-ktore_sterowanie = 1; % czy zmieniamy sterowanie u1 czy u2
+ktore_sterowanie = 2; % czy zmieniamy sterowanie u1 czy u2
 
 if ktore_sterowanie == 1
     u_list = [7, 9, 11, 13, 15, 17, 19];
+%     u_list = 0:0.5:40;
 elseif ktore_sterowanie == 2
     u_list = [20, 25, 30, 35, 40, 45, 50];
+%     u_list = 0:0.5:60;
 else
     ktore_sterowanie = 1;
     u_list = 13;
@@ -134,7 +136,7 @@ for i_list = 1:length(u_list)
     xlabel("Numer kroku", 'interpreter', 'latex');
     ylabel("$y_2$ $[^\circ C]$", 'interpreter', 'latex');
     
-%     [y1(2000), y1l(2000), abs(y1l(2000)-y1(2000)), 100*abs(y1l(2000)-y1(2000))/y1(2000)]
-%     [y2(2000), y2l(2000), abs(y2l(2000)-y2(2000)), 100*abs(y2l(2000)-y2(2000))/y2(2000)]
+    y1_comp(i_list,:)=[u1(n-1),u2(n-1),y1(2000), y1l(2000), abs(y1l(2000)-y1(2000)), 100*abs(y1l(2000)-y1(2000))/y1(2000)];
+    y2_comp(i_list,:)=[u1(n-1),u2(n-1),y2(2000), y2l(2000), abs(y2l(2000)-y2(2000)), 100*abs(y2l(2000)-y2(2000))/y2(2000)];
 %     pause;
 end
