@@ -17,7 +17,7 @@ function [f1] = f1L(u1, u2, w1, w2, x1, x2)
     
     % Równanie zlinearyzowane (to samo co wyżej) po uporządkowaniu
     % zmiennych do postaci: f1=a11*x1 + 0*x2 + b11*u1 + b12*u2 + const
-    f1=1/(2*C)*(-u10/(x10^2)-u20/(x10^2)-w1/(x10^2)-alpha/(2*sqrt(x10^3)))*x1 + 1/(2*C)*(1/x10)*u1 + 1/(2*C)*(1/x10)*u2 + 1/(2*C)*((u10+u20+2*w1)/x10 - alpha/(2*sqrt(x10)));
+    f1=1/(2*C)*(-u10/(x10^2)-u20/(x10^2)-w1/(x10^2)+alpha/(2*sqrt(x10^3)))*x1 + 1/(2*C)*(1/x10)*u1 + 1/(2*C)*(1/x10)*u2 + 1/(2*C)*((u10+u20+2*w1)/x10 - 3*alpha/(2*sqrt(x10)));
 end
 
 function [f2] = f2L(u1, u2, w1, w2, x1, x2)
