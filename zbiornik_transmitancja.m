@@ -36,12 +36,12 @@ SS = delayss(A,[B(1,1), 0; B(2,1), 0],[1,0;0,0],zeros(2),DelayT);
 Tp=1; % okres próbkowania
 TFd = c2d(TF,Tp,'zoh'); % transmitancja dyskretna
 opt = stepDataOptions('InputOffset',0,'StepAmplitude',1);
-% figure; step(TF,opt); hold on; step(TFd,opt); grid on;
-% legend('TF','TFd');
+figure; step(TF,opt); hold on; step(TFd,opt); grid on;
+legend('TF','TFd');
 
 SSd = c2d(SS,Tp,'zoh'); % równania stanu dyskretne
-figure; step(TFd,opt); hold on; step(SSd,opt); grid on;
-legend('TFd','SSd');
+figure; step(SS,opt); hold on; step(SSd,opt); grid on;
+legend('SS','SSd');
 
 
 % x0 = [54.39 34.05];
