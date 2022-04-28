@@ -13,7 +13,7 @@ function [y, x_nast] = symulacja_obiektu(u1, u2, w1, w2, x1, x2, x2_opoz, h, czy
     % y=[h, T_out];
     
     if czy_zlin
-        [f1, f2, g] = zbiornik_model_zlin;
+        [f1, f2, g] = zbiornik_model_zlin2;
     else
         [f1, f2, g] = zbiornik_model;
     end
