@@ -12,7 +12,7 @@ clear;
 % Parametry modelu
 [T_H,T_C,tau,tau_C,C,alpha] = parametry_modelu();
 
-n=2e3; % liczba kroków h
+n=8e3; % liczba kroków h
 h=1; % wielkość kroku [s]
 
 czy_zlin=false; % czy model liniowy czy zlinearyzowany
@@ -28,6 +28,8 @@ y1=zeros(n,1);
 y2=zeros(n,1);
 y1zad=zeros(n,1);
 y2zad=zeros(n,1);
+e1=0; % uchyby regulacji
+e2=0;
 u1=zeros(n-1,1);
 u2=zeros(n-1,1);
 uR1=zeros(n-1,1);
@@ -40,29 +42,40 @@ x1(1)=x10;
 x2(1)=x20;
 y1(1)=y10;
 y2(1)=y20;
+u1(1)=u10;
+u2(1)=u20;
 
 % Zadana trajektoria zakłóceń
 w1(1:n-1)=w10;
+w1(5000:n-1)=15;
 w2(1:n-1)=w20;
+w2(7000:n-1)=25;
 
 % Zadana trajektoria wyjść
-y1zad(1:499)=y10;
-y1zad(500:n)=65;
-y2zad(1:999)=y20;
-y2zad(1000:n)=25;
+y1zad(1:999)=y10;
+y1zad(1000:n)=60;
+y2zad(1:2999)=y20;
+y2zad(3000:n)=30;
 
-% Regulatory PID -----------------------(trzeba dostroić)-----------------
+% Regulatory PID 
 % classPID(K, Ti, Kd, Td, Tp, Hlim, Llim, Dir, AutoMan, ManVal) 
-pid12=classPID(2, 10, 0, 0, 1, 100, 0, 1, 1, 0);
-pid21=classPID(2, 10, 0, 0, 1, 100, 0, 1, 1, 0);
+% Nastawy poprawione, po ustawieniu drugiego reg. na K=1:
+pid12=classPID(1.125, 298.33, 0, 0, 1, 100, 0, 1, 1, 0);%k_kr=2.5, T_kr=358
+pid21=classPID(1.08, 153.33, 0, 0, 1, 100, 0, 1, 1, 0);%k_kr=2.4, T_kr=184
 
-% Bloki odsprzęgające ----------------(trzeba sprawdzić)-----------------
+% Bloki odsprzęgające
 % classLEADLAG(K, LEAD, LAG, Tp, Hlim, Llim) 
-D21=classLEADLAG(-1/0.00007096, 0.02578/0.00007096, 0, 1, 100, 0);
-D12=classLEADLAG(-1, 0, 0, 1, 100, 0);
+D21=classLEADLAG(0.00002384/0.00007096, -0.01056/0.00002384, 0.02578/0.00007096, 1, 100, -100);
+D12=classLEADLAG(0, 0, 0, 1, 100, -100); %wyłączony
 du1=zeros(n-1,1); du2=zeros(n-1,1);
 
-% Główna pętla symulacji obiektu    
+% Sterowanie ręczne na pocz. symulacji (tylko pierwsza iteracja głównej
+% pętli, by poprawnie zainicjalizował się PID)
+% SetAutoMan(obj, AutoMan, ManVal)
+pid12.SetAutoMan(0,u20);
+pid21.SetAutoMan(0,u10);
+
+% Główna pętla regulacji obiektu    
 for i=2:n
     if i-1-tau_C > 0
         u2_opoz=u2(i-1-tau_C);
@@ -81,6 +94,12 @@ for i=2:n
     x2(i)=x_nast(2);
     y1(i)=y(1);
     y2(i)=y(2);
+    
+    % Przejście na ster. automatyczne
+    if i>2
+        pid12.SetAutoMan(1,u20);
+        pid21.SetAutoMan(1,u10);
+    end
     
     if i<n
         % Sterowania wyznaczone przez regulatory PID
@@ -103,10 +122,17 @@ for i=2:n
         if u1(i)<0
             u1(i)=0;
         end
+        
+        % Wskaźniki jakości regulacji
+        e1 = e1 + (y1zad(i)-y1(i))^2;
+        e2 = e2 + (y2zad(i)-y2(i))^2;
+        
     end
 
 end    
- 
+
+fprintf('E1=%.2f\n',e1');
+fprintf('E2=%.2f\n',e2');
 
 % Wykresy
 f=figure;
