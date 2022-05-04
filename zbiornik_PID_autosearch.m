@@ -14,7 +14,7 @@ czy_odsprz = false; % czy PID z odsprzęganiem czy bez
 czy_rozniczka = false;
 
 
-fminfun = @(x) control_error(getY(x, Yzad, W, 0, czy_zlin, czy_odsprz, czy_rozniczka), Yzad);
+fminfun = @(x) sum(control_error(getY(x, Yzad, W, 0, czy_zlin, czy_odsprz, czy_rozniczka), Yzad));
 options = optimoptions('fmincon', 'Display', 'final-detailed');
 [A, b] = PID_limits(2, czy_rozniczka);
 attemts = 1;
@@ -29,7 +29,7 @@ for i = 1:attemts
         stop(i).nastawy = fmincon(fminfun, [1.125, 300, 1.08, 150], A, b, [], [], [], [], [], options);
     end
     [Y, ~] = symulacja_PID_fun(Yzad, W, to_nastawy(stop(i).nastawy, 2, czy_rozniczka), 0, czy_zlin, czy_odsprz);
-    err(i) = control_error(Y, Yzad);
+    err(i) = sum(control_error(Y, Yzad));
 end
 disp(datestr(datenum(0, 0, 0, 0, 0, toc), 'HH:MM:SS'));
 
@@ -37,6 +37,7 @@ disp(datestr(datenum(0, 0, 0, 0, 0, toc), 'HH:MM:SS'));
 [~, I] = min(err);
 regulators = to_nastawy(stop(I).nastawy, 2, czy_rozniczka);
 [Y, U] = symulacja_PID_fun(Yzad, W, regulators, 0, czy_zlin, czy_odsprz);
+control_error(Y, Yzad)
 
 % Wykresy
 f = figure;
