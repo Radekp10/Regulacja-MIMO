@@ -18,7 +18,7 @@ h=1; % wielkość kroku (czyli jak szybko chodzi sam obiekt) [s]
 n=8e3/Tp; % liczba kroków 'Tp'
 
 czy_zlin=false; % czy model nieliniowy czy zlinearyzowany
-czy_komp_zakl=false; % czy kompensować zakl. mierzone
+czy_komp_zakl=true; % czy kompensować zakl. mierzone
 
 % Osie do wykresu
 tu=0:Tp:Tp*(n-1);
