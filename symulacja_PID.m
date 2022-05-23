@@ -15,7 +15,7 @@ clear;
 n=8e3; % liczba kroków h
 h=1; % wielkość kroku [s]
 
-czy_zlin=false; % czy model liniowy czy zlinearyzowany
+czy_zlin=false; % czy model nieliniowy czy zlinearyzowany
 czy_odsprz=false; % czy PID z odsprzęganiem czy bez
 
 % Osie do wykresu
