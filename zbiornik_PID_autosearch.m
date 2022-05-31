@@ -11,20 +11,20 @@ pp.w2 = w20;
 
 czy_zlin = false; % czy model liniowy czy zlinearyzowany
 czy_odsprz = false; % czy PID z odsprzęganiem czy bez
-czy_rozniczka = false;
+czy_rozniczka = true;
 
 
 fminfun = @(x) sum(control_error(getY(x, Yzad, W, 0, czy_zlin, czy_odsprz, czy_rozniczka), Yzad));
-options = optimoptions('fmincon', 'Display', 'final-detailed');
+options = optimoptions('fmincon', 'Display', 'off');
 [A, b] = PID_limits(2, czy_rozniczka);
-attemts = 1;
+attemts = 3;
 
 % Best settings searching
 tic
 for i = 1:attemts
     disp(i)
     if czy_rozniczka
-        stop(i).nastawy = fmincon(fminfun, [1.125, 300, 0, 0, 1.08, 150, 0, 0], A, b, [], [], [], [], [], options);
+        stop(i).nastawy = fmincon(fminfun, [1.5, 179, 44.75/4, 0, 1.44, 92, 23/8, 0], A, b, [], [], [], [], [], options);
     else
         stop(i).nastawy = fmincon(fminfun, [1.125, 300, 1.08, 150], A, b, [], [], [], [], [], options);
     end
