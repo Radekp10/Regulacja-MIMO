@@ -1,7 +1,7 @@
 % Skrypt do regulacji zbiornikiem przy pomocy analitycznego DMC 
 % z przycinaniem sterowania
 
-clear;
+% clear;
 
 % Pobranie uchwytu do funkcji symulującej zbiornik
 [punkt_pracy, parametry_modelu]=zbiornik_param;
@@ -241,6 +241,7 @@ fprintf('E1=%.2f\n',e1');
 fprintf('E2=%.2f\n',e2');
 
 % Wykresy
+close all;
 f=figure;
 if czy_zlin 
     f.Name='Symulacja z modelem zlinearyzowanym';

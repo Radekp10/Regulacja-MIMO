@@ -1,6 +1,6 @@
 % Symulacja obiektu z regulatorem dwupętlowym PID
 
-clear;
+% clear;
 
 % Pobranie uchwytu do funkcji symulującej zbiornik
 [punkt_pracy, parametry_modelu]=zbiornik_param;
@@ -60,13 +60,19 @@ y2zad(3000:n)=30;
 % Regulatory PID 
 % classPID(K, Ti, Kd, Td, Tp, Hlim, Llim, Dir, AutoMan, ManVal) 
 % Nastawy poprawione, po ustawieniu drugiego reg. na K=1:
-pid12=classPID(1.125, 298.33, 0, 0, 1, 100, 0, 1, 1, 0);%k_kr=2.5, T_kr=358
-pid21=classPID(1.08, 153.33, 0, 0, 1, 100, 0, 1, 1, 0);%k_kr=2.4, T_kr=184
+% pid12=ovation_classPID(1.125, 298.33, 0, 0, 1, 100, 0, 1, 1, 0);%k_kr=2.5, T_kr=358
+% pid21=ovation_classPID(1.08, 153.33, 0, 0, 1, 100, 0, 1, 1, 0);%k_kr=2.4, T_kr=184
+pid12=ovation_classPID(1.2028, 209.6030, 0, 0, 1, 100, 0, 1, 1, 0);%k_kr=2.5, T_kr=358
+pid21=ovation_classPID(1.2087, 167.2189, 0, 0, 1, 100, 0, 1, 1, 0);%k_kr=2.4, T_kr=184
+% pid12=ovation_classPID(1.5, 179,    44.75/4, 0    , 1, 100, 0, 1, 1, 0);%k_kr=2.5, T_kr=358
+% pid21=ovation_classPID(1.44, 92,    23/8, 0    ,1, 100, 0, 1, 1, 0);%k_kr=2.4, T_kr=184
+% pid12=ovation_classPID(1.8243, 74.9957, 11.1005, 4.4107, 1, 100, 0, 1, 1, 0);%k_kr=2.5, T_kr=358
+% pid21=ovation_classPID(1.5047, 65.7079,  3.1393, 8.0405, 1, 100, 0, 1, 1, 0);%k_kr=2.4, T_kr=184
 
 % Bloki odsprzęgające
 % classLEADLAG(K, LEAD, LAG, Tp, Hlim, Llim) 
-D21=classLEADLAG(0.00002384/0.00007096, -0.01056/0.00002384, 0.02578/0.00007096, 1, 100, -100);
-D12=classLEADLAG(0, 0, 0, 1, 100, -100); %wyłączony
+D21=ovation_classLEADLAG(0.00002384/0.00007096, -0.01056/0.00002384, 0.02578/0.00007096, 1, 100, -100);
+D12=ovation_classLEADLAG(0, 0, 0, 1, 100, -100); %wyłączony
 du1=zeros(n-1,1); du2=zeros(n-1,1);
 
 % Sterowanie ręczne na pocz. symulacji (tylko pierwsza iteracja głównej
